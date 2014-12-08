@@ -48,7 +48,7 @@ for version in "${versions[@]}"; do
 	mirror="$(get_part "$dir" mirror '')"
 	script="$(get_part "$dir" script '')"
 	arch="$(get_part "$dir" arch '')"
-	
+
 	args=( -d "$dir" debootstrap )
 	[ -z "$variant" ] || args+=( --variant="$variant" )
 	[ -z "$components" ] || args+=( --components="$components" )
@@ -61,18 +61,20 @@ for version in "${versions[@]}"; do
 			args+=( "$script" )
 		fi
 	fi
-	
+
 	mkimage="$(readlink -f "${MKIMAGE:-"mkimage.sh"}")"
 	{
 		echo "$(basename "$mkimage") ${args[*]/"$dir"/.}"
 		echo
 		echo 'https://github.com/docker/docker/blob/master/contrib/mkimage.sh'
 	} > "$dir/build-command.txt"
-	
+
 	sudo nice ionice -c 3 "$mkimage" "${args[@]}" 2>&1 | tee "$dir/build.log"
-	
+
 	sudo chown -R "$(id -u):$(id -g)" "$dir"
-	
+
+        xz -d < $dir/rootfs.tar.xz | gzip -c > $dir/rootfs.tar.gz
+
 	if [ "$repo" ]; then
 		docker build -t "${repo}:${suite}" "$dir"
 		if [ "$suite" != "$version" ]; then

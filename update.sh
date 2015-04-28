@@ -75,6 +75,12 @@ for version in "${versions[@]}"; do
 
         xz -d < $dir/rootfs.tar.xz | gzip -c > $dir/rootfs.tar.gz
 
+	# qemu-user-static
+	wget --no-check-certificate https://github.com/armbuild/qemu-user-static/raw/master/x86_64/qemu-arm-static -O "${dir}"/qemu-arm-static
+	chmod +x "${dir}/qemu-arm-static"
+	echo "COPY ./qemu-arm-static /usr/bin/" >> "${dir}"/Dockerfile
+		
+	
 	if [ "$repo" ]; then
 		docker build -t "${repo}:${suite}" "$dir"
 		if [ "$suite" != "$version" ]; then

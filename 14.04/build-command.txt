@@ -1,0 +1,3 @@
+mkimage.sh -d . debootstrap --variant=minbase --components=main,universe --include=inetutils-ping,iproute2,wget --arch=armhf trusty http://mirror.cloud.online.net/ubuntu-ports
+
+https://github.com/docker/docker/blob/master/contrib/mkimage.sh

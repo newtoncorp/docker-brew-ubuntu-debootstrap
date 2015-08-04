@@ -78,7 +78,7 @@ for version in "${versions[@]}"; do
 	# qemu-user-static
 	wget --no-check-certificate https://github.com/armbuild/qemu-user-static/raw/master/x86_64/qemu-arm-static -O "${dir}"/qemu-arm-static
 	chmod +x "${dir}/qemu-arm-static"
-	echo "COPY ./qemu-arm-static /usr/bin/" >> "${dir}"/Dockerfile
+	echo "COPY ./qemu-arm-static /usr/local/bin/" >> "${dir}"/Dockerfile
 		
 	
 	if [ "$repo" ]; then
